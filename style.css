@@ -12,12 +12,25 @@ body, html {
 }
 
 /* 2. 1번 메인: 인트로 디자인 (자간 확장 버전) */
+#bg-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    opacity: 0.4; /* 영상 밝기에 따라 0.3 ~ 0.6 사이로 조절하세요 */
+    background-color: #000; /* 영상 로딩 전 검은 화면 유지 */
+}
 #intro-screen {
     position: fixed; top: 0; width: 100%; height: 100vh;
     background: var(--bg-color); z-index: 100;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     transition: transform 1.5s cubic-bezier(0.7, 0, 0.3, 1);
     text-align: center;
+    overflow: hidden;
 }
 
 .main-logo { 
