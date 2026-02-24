@@ -131,3 +131,66 @@ nav {
 .image-box:hover::after { transform: translateY(100%); }
 .visual-label { font-size: 0.5rem; color: var(--sub-grey); letter-spacing: 4px; transition: 0.4s; }
 .image-box:hover .visual-label { color: #fff; letter-spacing: 8px; }
+
+.timeline-container {
+    display: flex;
+    height: 60vh;
+    position: relative;
+    overflow: hidden;
+}
+
+.orbit-visual {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* 거대한 원의 왼쪽 일부만 보이게 설정 */
+.orbit-circle {
+    position: absolute;
+    left: -250px; /* 원을 왼쪽으로 밀어 반만 보이게 */
+    width: 600px;
+    height: 600px;
+    border: 1px dashed rgba(255,255,255,0.1);
+    border-radius: 50%;
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.orbit-number {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 5rem;
+    font-weight: 800;
+    color: rgba(255,255,255,0.05); /* 기본은 흐릿하게 */
+    transition: 0.4s;
+}
+
+/* 숫자들을 원형 궤도에 배치 (계산식) */
+.orbit-number:nth-child(1) { transform: translate(-50%, -50%) rotate(-40deg) translateX(300px) rotate(40deg); }
+.orbit-number:nth-child(2) { transform: translate(-50%, -50%) rotate(-20deg) translateX(300px) rotate(20deg); }
+.orbit-number:nth-child(3) { transform: translate(-50%, -50%) rotate(0deg) translateX(300px) rotate(0deg); }
+.orbit-number:nth-child(4) { transform: translate(-50%, -50%) rotate(20deg) translateX(300px) rotate(-20deg); }
+.orbit-number:nth-child(5) { transform: translate(-50%, -50%) rotate(40deg) translateX(300px) rotate(-40deg); }
+
+.orbit-number.active {
+    color: #fff;
+    font-size: 6rem;
+    opacity: 1;
+}
+
+.timeline-content {
+    flex: 1;
+    overflow-y: scroll;
+    padding-right: 50px;
+    scroll-snap-type: y mandatory; /* 한 항목씩 딱딱 걸리게 */
+}
+
+.history-item {
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    scroll-snap-align: center;
+}

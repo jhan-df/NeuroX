@@ -35,3 +35,25 @@ function showSection(sectionId) {
     sections.forEach(s => s.classList.remove('active-section'));
     document.getElementById(sectionId).classList.add('active-section');
 }
+
+const timelineContent = document.querySelector('.timeline-content');
+const orbitCircle = document.querySelector('.orbit-circle');
+const orbitNumbers = document.querySelectorAll('.orbit-number');
+
+if (timelineContent) {
+    timelineContent.addEventListener('scroll', () => {
+        const itemHeight = 300; // history-item의 높이
+        const scrollPos = timelineContent.scrollTop;
+        const index = Math.round(scrollPos / itemHeight);
+        
+        // 스크롤에 맞춰 원 회전 (한 칸당 20도씩)
+        const rotation = index * -20;
+        orbitCircle.style.transform = `rotate(${rotation}deg)`;
+        
+        // 현재 인덱스 숫자 강조
+        orbitNumbers.forEach((num, i) => {
+            if (i === index) num.classList.add('active');
+            else num.classList.remove('active');
+        });
+    });
+}
