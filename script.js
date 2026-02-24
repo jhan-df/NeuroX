@@ -42,18 +42,28 @@ const orbitNumbers = document.querySelectorAll('.orbit-number');
 
 if (timelineContent) {
     timelineContent.addEventListener('scroll', () => {
-        const itemHeight = 300; // history-item의 높이
+        // history-item 하나당 높이 계산 (스크롤 영역 / 아이템 개수)
+        const itemHeight = timelineContent.scrollHeight / orbitNumbers.length;
         const scrollPos = timelineContent.scrollTop;
-        const index = Math.round(scrollPos / itemHeight);
         
-        // 스크롤에 맞춰 원 회전 (한 칸당 20도씩)
-        const rotation = index * -20;
+        // 현재 어떤 아이템이 중앙에 있는지 계산
+        const index = Math.round(scrollPos / (timelineContent.clientHeight));
+        
+        // 원 회전: 한 칸당 20도씩 역방향으로 회전하여 숫자를 중앙으로 가져옴
+        // (기존 각도가 -40, -20, 0, 20, 40 이므로 index에 따라 반대로 돌려야 함)
+        const rotation = (index - 2) * -20; 
         orbitCircle.style.transform = `rotate(${rotation}deg)`;
         
-        // 현재 인덱스 숫자 강조
+        // 강조 효과
         orbitNumbers.forEach((num, i) => {
-            if (i === index) num.classList.add('active');
-            else num.classList.remove('active');
+            if (i === index) {
+                num.style.color = "#ffffff";
+                num.style.opacity = "1";
+                num.style.fontSize = "5rem";
+            } else {
+                num.style.color = "rgba(255, 255, 255, 0.05)";
+                num.style.fontSize = "4rem";
+            }
         });
     });
 }
