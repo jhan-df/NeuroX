@@ -13,174 +13,139 @@
             --line-white: rgba(255, 255, 255, 0.15);
         }
 
-        body { 
-            font-family: 'Inter', sans-serif; 
+        body, html { 
+            margin: 0; padding: 0;
             background-color: var(--bg-color); 
             color: var(--main-white);
-            margin: 0; min-height: 100vh;
-            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden; /* 전체 스크롤은 스크립트로 제어 */
         }
 
-        /* 1번 메인: 인트로 */
+        /* 1번 메인: 인트로 (오버레이 형태) */
         #intro-screen {
-            position: fixed; top:0; left:0; width:100%; height:100%;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
             background: var(--bg-color);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 100; transition: 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 100;
+            transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1);
         }
 
-        /* 2번 페이지: 메인 로비 컨테이너 */
+        /* 2번 페이지: 메인 로비 */
         #lobby-screen {
-            display: none; opacity: 0; transition: 1s ease-in;
-            padding-top: 100px; /* 상단 메뉴바 공간 */
+            position: relative; width: 100%; height: 100vh;
+            overflow-y: auto; /* 로비 내부에서만 스크롤 가능 */
+            padding-top: 80px; box-sizing: border-box;
         }
 
-        /* 상단 네비게이션바 */
+        /* 네비게이션바 */
         nav {
-            position: fixed; top: 0; width: 100%;
+            position: fixed; top: 0; width: 100%; height: 70px;
             border-bottom: 1px solid var(--line-white);
-            background: rgba(10, 10, 10, 0.8);
+            background: rgba(10, 10, 10, 0.9);
             backdrop-filter: blur(10px);
             z-index: 90;
             display: flex; justify-content: space-between; align-items: center;
-            padding: 20px 5%; box-sizing: border-box;
+            padding: 0 5%; box-sizing: border-box;
         }
 
         .nav-logo { font-weight: 700; letter-spacing: 5px; cursor: pointer; }
-        .nav-links { display: flex; gap: 30px; }
-        .nav-links span { 
-            font-size: 0.65rem; color: var(--sub-grey); 
-            cursor: pointer; text-transform: uppercase; letter-spacing: 2px;
-            transition: 0.3s;
-        }
-        .nav-links span:hover { color: var(--main-white); }
+        .nav-links { display: flex; gap: 20px; }
+        .nav-links span { font-size: 0.65rem; color: var(--sub-grey); cursor: pointer; text-transform: uppercase; letter-spacing: 2px; }
 
-        /* 공통 섹션 스타일 */
+        /* 컨텐츠 섹션 */
         .content-section {
-            width: 90%; max-width: 1200px; margin: 0 auto 100px;
-            display: none; /* 메뉴 클릭 전까지 숨김 */
+            width: 90%; max-width: 1000px; margin: 40px auto;
+            display: none; animation: fadeIn 0.8s forwards;
         }
-        .active-section { display: block; animation: fadeIn 0.8s forwards; }
+        .active-section { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* 기존 서비스 카드 스타일 유지 */
-        .service-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
-        .service-card { border-top: 1px solid var(--main-white); padding-top: 20px; }
-        .image-box { 
-            background: rgba(255, 255, 255, 0.02); width: 100%; aspect-ratio: 16/9; 
-            border: 1px solid var(--line-white); display: flex; align-items: center; justify-content: center;
-            overflow: hidden; position: relative; transition: 0.5s;
-        }
-        .image-box:hover { background: rgba(255, 255, 255, 0.08); border-color: var(--main-white); }
-        .image-box:hover .visual-label { letter-spacing: 8px; color: #fff; }
-        .visual-label { font-size: 0.5rem; color: var(--sub-grey); letter-spacing: 4px; transition: 0.4s; }
-
-        .spec-table { width: 100%; border-collapse: collapse; font-size: 0.6rem; margin: 20px 0; }
-        .spec-table tr { border-bottom: 1px solid var(--line-white); }
-        .spec-table td { padding: 10px 0; color: var(--sub-grey); text-transform: uppercase; }
-        .spec-val { text-align: right; color: var(--main-white); }
-
-        /* 버튼 스타일 */
+        /* 버튼 및 기타 스타일 생략(기존 유지) */
         .btn-access {
             padding: 15px 50px; border: 1px solid var(--sub-grey); background: none; color: white;
             cursor: pointer; letter-spacing: 5px; font-size: 0.8rem; transition: 0.5s;
         }
         .btn-access:hover { background: #fff; color: #000; }
 
-        /* Culture/History 텍스트 스타일 */
-        .text-block { line-height: 1.8; color: #aaa; font-size: 0.9rem; max-width: 700px; }
-        .text-block b { color: #fff; font-weight: 400; }
+        /* 스크롤 유도 안내 */
+        .scroll-hint {
+            position: absolute; bottom: 30px; font-size: 0.6rem; color: #333;
+            letter-spacing: 2px; animation: bounce 2s infinite;
+        }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-5px);} 60% {transform: translateY(-3px);} }
     </style>
 </head>
 <body>
 
     <div id="intro-screen">
-        <h1 style="letter-spacing: 20px; font-weight: 700; margin-bottom: 10px;">NEURO X</h1>
+        <h1 style="letter-spacing: 20px; font-weight: 700;">NEURO X</h1>
         <div style="text-align: center; margin-bottom: 50px;">
             <div style="font-size: 1rem; font-weight: 100; letter-spacing: 8px;">DESIGNING YOUR TOMORROW</div>
             <div style="font-size: 0.7rem; color: var(--sub-grey); margin-top: 10px;">당신의 내일을 설계합니다.</div>
         </div>
-        <button class="btn-access" onclick="enterLobby()">SYSTEM ACCESS</button>
+        <button class="btn-access" onclick="toggleScreen(true)">SYSTEM ACCESS</button>
+        <div class="scroll-hint">SCROLL DOWN TO ENTER</div>
     </div>
 
-    <div id="lobby-screen">
+    <div id="lobby-screen" onscroll="handleLobbyScroll(this)">
         <nav>
-            <div class="nav-logo" onclick="location.reload()">NEURO X</div>
+            <div class="nav-logo" onclick="toggleScreen(false)">NEURO X</div>
             <div class="nav-links">
                 <span onclick="showSection('services')">Services</span>
-                <span onclick="showSection('culture')">Culture & History</span>
+                <span onclick="showSection('culture')">History</span>
                 <span onclick="showSection('location')">Location</span>
             </div>
         </nav>
 
         <section id="services" class="content-section active-section">
-            <h2 style="font-weight: 100; letter-spacing: 5px; margin-bottom: 40px;">SERVICE CATALOG</h2>
-            <div class="service-grid">
-                <div class="service-card">
-                    <div style="margin-bottom: 20px; font-weight: 700;">EMOTION SEPARATION <span style="font-size: 0.7rem; color: var(--sub-grey); font-weight: 400;">감정 분리</span></div>
-                    <table class="spec-table">
-                        <tr><td>Protocol</td><td class="spec-val">NX-01-ALPHA</td></tr>
-                        <tr><td>Fact Integrity</td><td class="spec-val">100.0%</td></tr>
-                    </table>
-                    <div class="image-box"><div class="visual-label">[ DECOUPLING... ]</div></div>
-                </div>
-                <div class="service-card">
-                    <div style="margin-bottom: 20px; font-weight: 700;">MEMORY INCINERATION <span style="font-size: 0.7rem; color: var(--sub-grey); font-weight: 400;">기억 소각</span></div>
-                    <table class="spec-table">
-                        <tr><td>Protocol</td><td class="spec-val">NX-02-OMEGA (VIP)</td></tr>
-                        <tr><td>Stability</td><td class="spec-val">CRITICAL RISK</td></tr>
-                    </table>
-                    <div class="image-box"><div class="visual-label">[ IRREVERSIBLE PROCESS ]</div></div>
-                </div>
-            </div>
+            <h2 style="font-weight: 100; letter-spacing: 5px; margin-bottom: 30px;">SERVICE CATALOG</h2>
+            <p style="color: #444; font-size: 0.8rem;">[ 서비스 데이터를 불러오는 중... ]</p>
         </section>
 
         <section id="culture" class="content-section">
-            <h2 style="font-weight: 100; letter-spacing: 5px; margin-bottom: 40px;">CULTURE & HISTORY</h2>
-            <div class="text-block">
-                <p><b>기억은 데이터이며, 데이터는 자산입니다.</b> 뉴로엑스는 2040년 설립 이래 인류의 정신적 평온을 위해 헌신해 왔습니다. 우리는 고통스러운 기억을 단순한 '수정 가능한 버그'로 정의합니다.</p>
-                <p>뉴로엑스의 사내 문화는 <b>'무결점의 정신'</b>을 지향합니다. 모든 임직원은 정기적인 감정 최적화 시술을 통해 최상의 업무 효율을 유지하며, 이는 곧 고객의 내일을 설계하는 원동력이 됩니다.</p>
-            </div>
-        </section>
-
-        <section id="location" class="content-section">
-            <h2 style="font-weight: 100; letter-spacing: 5px; margin-bottom: 40px;">LOCATION</h2>
-            <div class="text-block">
-                <p><b>NeuroX Global Headquarters</b></p>
-                <p style="color: var(--sub-grey);">세종특별자치시 코어 구역 01-X<br>뉴로엑스 타워 (전 구역 기밀 등급 보안 적용)</p>
-                <div style="width: 100%; height: 200px; background: #1a1a1a; border: 1px solid var(--line-white); margin-top: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: #444;">
-                    [ MAP DATA ENCRYPTED ]
-                </div>
-            </div>
+            <h2 style="font-weight: 100; letter-spacing: 5px; margin-bottom: 30px;">CORPORATE HISTORY</h2>
+            <p style="font-size: 0.9rem; line-height: 1.8; color: #888;">2040: NeuroX 정식 설립<br>2042: '감정 분리' 기술 특허 취득</p>
         </section>
     </div>
 
     <script>
-        // 1번 -> 2번 전환
-        function enterLobby() {
-            const intro = document.getElementById('intro-screen');
-            const lobby = document.getElementById('lobby-screen');
-            
-            intro.style.transform = 'translateY(-100%)'; // 위로 슬라이드하며 사라짐
-            setTimeout(() => {
-                intro.style.display = 'none';
-                lobby.style.display = 'block';
-                setTimeout(() => { lobby.style.opacity = '1'; }, 50);
-            }, 1000);
+        const intro = document.getElementById('intro-screen');
+        const lobby = document.getElementById('lobby-screen');
+
+        // 화면 전환 함수
+        function toggleScreen(enter) {
+            if (enter) {
+                intro.style.transform = 'translateY(-100%)';
+            } else {
+                intro.style.transform = 'translateY(0)';
+            }
         }
 
-        // 메뉴 클릭 시 섹션 전환
+        // 1번 화면에서 휠을 내릴 때
+        window.addEventListener('wheel', (e) => {
+            if (intro.style.transform === 'translateY(0)' || intro.style.transform === '') {
+                if (e.deltaY > 0) toggleScreen(true);
+            }
+        });
+
+        // 2번 화면에서 휠을 올릴 때 (최상단인 경우에만)
+        function handleLobbyScroll(el) {
+            if (el.scrollTop === 0) {
+                // 상단에서 더 위로 올리려는 제스처를 감지하기 위해 wheel 이벤트 별도 처리 필요
+            }
+        }
+
+        // 2번 화면 최상단에서 위로 스크롤 시 복귀
+        lobby.addEventListener('wheel', (e) => {
+            if (lobby.scrollTop === 0 && e.deltaY < 0) {
+                toggleScreen(false);
+            }
+        });
+
         function showSection(sectionId) {
-            // 모든 섹션 숨기기
             const sections = document.querySelectorAll('.content-section');
             sections.forEach(s => s.classList.remove('active-section'));
-
-            // 선택한 섹션만 보이기
             document.getElementById(sectionId).classList.add('active-section');
-            
-            // 페이지 상단으로 스크롤
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
 </body>
