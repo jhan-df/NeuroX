@@ -45,11 +45,29 @@ body, html {
 .ko-slogan { font-size: 0.75rem; color: var(--sub-grey); letter-spacing: 5px; font-weight: 300; }
 
 .btn-access {
-    padding: 18px 60px; border: 1px solid #333; background: none; color: #fff;
-    cursor: pointer; letter-spacing: 6px; font-size: 0.75rem; transition: 0.5s;
-    font-weight: 300; margin-bottom: 40px; /* 아래 가이드와 거리 확보 */
+    margin-top: 50px; 
+    padding: 15px 50px; 
+    border: 1px solid rgba(255, 255, 255, 0.2); /* 테두리를 살짝 은은하게 */
+    
+    /* 핵심: 반투명한 배경색 추가 */
+    background: rgba(0, 0, 0, 0.5); /* 0.5는 50% 투명도입니다. 영상에 따라 0.3~0.7로 조절해 보세요 */
+    backdrop-filter: blur(5px); /* 배경을 살짝 흐리게 만들어 버튼을 더 돋보이게 합니다 */
+    
+    color: white; 
+    cursor: pointer; 
+    letter-spacing: 5px; 
+    font-size: 0.8rem; 
+    transition: 0.5s;
+    font-weight: 300;
+    margin-bottom: 40px;
 }
-.btn-access:hover { background: #fff; color: #000; box-shadow: 0 0 30px rgba(255,255,255,0.2); }
+
+.btn-access:hover { 
+    background: rgba(255, 255, 255, 0.9); /* 마우스 올리면 거의 불투명한 흰색으로 */
+    color: #000; 
+    border-color: #fff;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.3); /* 광원 효과 추가 */
+}
 .scroll-hint {
     position: relative; /* 절대 위치 대신 상대 위치로 배치하여 버튼 아래로 */
     font-size: 0.6rem; /* 더 작게 */
