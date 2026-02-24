@@ -39,8 +39,8 @@ body, html {
 .btn-access:hover { background: #fff; color: #000; box-shadow: 0 0 30px rgba(255,255,255,0.2); }
 .scroll-hint {
     position: relative; /* 절대 위치 대신 상대 위치로 배치하여 버튼 아래로 */
-    font-size: 0.55rem; /* 더 작게 */
-    color: #444; letter-spacing: 4px; 
+    font-size: 0.6rem; /* 더 작게 */
+    color: #fff; letter-spacing: 4px; 
     font-weight: 100; /* 아주 얇게 */
     margin-top: 20px;
     animation: fadeInOut 2s infinite; /* 부드럽게 깜빡이는 효과 추가 */
