@@ -132,107 +132,87 @@ nav {
 .visual-label { font-size: 0.5rem; color: var(--sub-grey); letter-spacing: 4px; transition: 0.4s; }
 .image-box:hover .visual-label { color: #fff; letter-spacing: 8px; }
 
+/* style.css 하단의 타임라인 관련 부분을 이 코드로 완전히 교체하세요 */
+
 .timeline-container {
     display: flex;
-    height: 60vh;
+    height: 500px; /* 고정 높이를 주어야 정렬이 정확해집니다 */
     position: relative;
     overflow: hidden;
+    margin-top: 50px;
 }
 
-/* 1. 좌측 숫자 궤도 중앙 정렬 보정 */
 .orbit-visual {
     flex: 1;
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: center; /* 내부 요소 중앙 정렬 */
+    justify-content: center;
     height: 100%;
 }
 
 .orbit-circle {
     position: absolute;
     left: -250px; 
-    top: 50%; /* 부모의 세로 중앙에 위치 */
+    top: 50%;
     width: 600px;
     height: 600px;
-    margin-top: -300px; /* 높이의 절반만큼 위로 올려 완벽한 중앙 배치 */
+    margin-top: -300px;
     border: 1px dashed rgba(255, 255, 255, 0.1);
     border-radius: 50%;
     transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-    transform-origin: center center;
 }
 
-/* 1. 우측 텍스트 영역: 중앙 정렬 보강 */
 .timeline-content {
     flex: 1;
     height: 100%;
     overflow-y: scroll;
-    padding-right: 0;
     scroll-snap-type: y mandatory;
     -ms-overflow-style: none;  
     scrollbar-width: none;
-    /* 항목들이 상하 여백을 가져서 항상 중앙에 오도록 설정 */
-    display: flex;
-    flex-direction: column;
 }
-
-/* Chrome, Safari, Opera */
-.timeline-content::-webkit-scrollbar {
-    display: none;
-}
+.timeline-content::-webkit-scrollbar { display: none; }
 
 .history-item {
-    min-height: 100%; /* 한 항목이 전체 높이를 차지하여 정중앙에 오게 함 */
+    height: 100%; /* 부모(timeline-container) 높이만큼 차지 */
     display: flex;
     flex-direction: column;
     justify-content: center;
     scroll-snap-align: center;
-    opacity: 0.2;
-    transition: 0.5s;
+    opacity: 0.15;
+    transition: all 0.5s ease;
+    transform: scale(0.9); /* 비활성 항목은 살짝 작게 */
 }
 
-/* 선택된 텍스트만 밝게 */
+/* 선택된 연도 텍스트 강조 */
 .history-item.active-text {
     opacity: 1;
+    transform: scale(1);
+    font-weight: 700;
 }
 
-/* 2. 숫자 간격 확대 (회전 각도 및 축 조정) */
+.history-item h3 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    letter-spacing: 5px;
+}
+
 .orbit-number {
     position: absolute;
     top: 50%;
     left: 50%;
-    margin-left: 250px; /* 원의 반지름을 조금 더 키움 */
+    margin-left: 250px;
     margin-top: -40px;
-    cursor: pointer; /* 클릭 가능하도록 표시 */
+    cursor: pointer;
     z-index: 10;
     transform-origin: -250px 40px;
     transition: all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    font-size: 3.5rem;
+    color: rgba(255, 255, 255, 0.05);
 }
 
-/* 간격을 2배로 (20도 -> 40도 차이) */
 .orbit-number:nth-child(1) { transform: rotate(-80deg); }
 .orbit-number:nth-child(2) { transform: rotate(-40deg); }
 .orbit-number:nth-child(3) { transform: rotate(0deg); }
 .orbit-number:nth-child(4) { transform: rotate(40deg); }
 .orbit-number:nth-child(5) { transform: rotate(80deg); }
-
-.orbit-number.active {
-    color: #fff;
-    font-size: 6rem;
-    opacity: 1;
-}
-
-.timeline-content {
-    flex: 1;
-    overflow-y: scroll;
-    padding-right: 50px;
-    scroll-snap-type: y mandatory; /* 한 항목씩 딱딱 걸리게 */
-}
-
-.history-item {
-    height: 300px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    scroll-snap-align: center;
-}
