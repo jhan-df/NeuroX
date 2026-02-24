@@ -176,7 +176,10 @@ nav {
     flex-direction: column;
 }
 
-.timeline-content::-webkit-scrollbar { display: none; }
+/* Chrome, Safari, Opera */
+.timeline-content::-webkit-scrollbar {
+    display: none;
+}
 
 .history-item {
     min-height: 100%; /* 한 항목이 전체 높이를 차지하여 정중앙에 오게 함 */
