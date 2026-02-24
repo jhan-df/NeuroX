@@ -45,7 +45,7 @@ body, html {
 .ko-slogan { font-size: 0.75rem; color: var(--sub-grey); letter-spacing: 5px; font-weight: 300; }
 
 .btn-access {
-    margin-top: 25px; 
+    margin-top: 15px; 
     padding: 15px 50px; 
     border: 1px solid rgba(255, 255, 255, 0.2); /* 테두리를 살짝 은은하게 */
     
