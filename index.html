@@ -4,174 +4,183 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;700&display=swap" rel="stylesheet">
-    <title>NeuroX | Service Archive</title>
+    <title>NeuroX | Designed Tomorrow</title>
     <style>
         :root {
             --bg-color: #0a0a0a;
             --main-white: #ffffff;
             --sub-grey: #666;
-            --line-white: rgba(255, 255, 255, 0.2);
+            --line-white: rgba(255, 255, 255, 0.15);
         }
 
         body { 
             font-family: 'Inter', sans-serif; 
             background-color: var(--bg-color); 
             color: var(--main-white);
-            margin: 0;
-            display: flex; flex-direction: column; align-items: center;
-            min-height: 100vh;
+            margin: 0; min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* [보존] 메인 진입 화면 및 전환 효과 */
-        #main-screen {
+        /* 1번 메인: 인트로 */
+        #intro-screen {
             position: fixed; top:0; left:0; width:100%; height:100%;
             background: var(--bg-color);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 10; transition: 1s ease-in-out;
-            padding: 20px; box-sizing: border-box;
+            z-index: 100; transition: 1.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* [최적화] 컨테이너 가변 폭 */
-        .container {
-            width: 90%; max-width: 1200px; padding: 60px 0;
+        /* 2번 페이지: 메인 로비 컨테이너 */
+        #lobby-screen {
             display: none; opacity: 0; transition: 1s ease-in;
+            padding-top: 100px; /* 상단 메뉴바 공간 */
         }
 
-        header {
-            border-bottom: 1px solid var(--main-white);
-            padding-bottom: 15px; margin-bottom: 60px;
-            display: flex; justify-content: space-between; align-items: flex-end;
+        /* 상단 네비게이션바 */
+        nav {
+            position: fixed; top: 0; width: 100%;
+            border-bottom: 1px solid var(--line-white);
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 90;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 5%; box-sizing: border-box;
         }
 
-        /* [최적화] 반응형 그리드: 모바일은 1열, PC는 2열 */
-        .service-grid {
-            display: grid; 
-            grid-template-columns: 1fr; 
-            gap: 60px;
+        .nav-logo { font-weight: 700; letter-spacing: 5px; cursor: pointer; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links span { 
+            font-size: 0.65rem; color: var(--sub-grey); 
+            cursor: pointer; text-transform: uppercase; letter-spacing: 2px;
+            transition: 0.3s;
         }
+        .nav-links span:hover { color: var(--main-white); }
 
-        @media (min-width: 768px) {
-            .service-grid { grid-template-columns: 1fr 1fr; }
+        /* 공통 섹션 스타일 */
+        .content-section {
+            width: 90%; max-width: 1200px; margin: 0 auto 100px;
+            display: none; /* 메뉴 클릭 전까지 숨김 */
         }
+        .active-section { display: block; animation: fadeIn 0.8s forwards; }
 
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* 기존 서비스 카드 스타일 유지 */
+        .service-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
         .service-card { border-top: 1px solid var(--main-white); padding-top: 20px; }
-        .card-header { display: flex; align-items: baseline; margin-bottom: 25px; gap: 10px; }
-        .card-title { font-weight: 700; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 2px; }
-        .card-ko { font-size: 0.75rem; color: var(--sub-grey); }
+        .image-box { 
+            background: rgba(255, 255, 255, 0.02); width: 100%; aspect-ratio: 16/9; 
+            border: 1px solid var(--line-white); display: flex; align-items: center; justify-content: center;
+            overflow: hidden; position: relative; transition: 0.5s;
+        }
+        .image-box:hover { background: rgba(255, 255, 255, 0.08); border-color: var(--main-white); }
+        .image-box:hover .visual-label { letter-spacing: 8px; color: #fff; }
+        .visual-label { font-size: 0.5rem; color: var(--sub-grey); letter-spacing: 4px; transition: 0.4s; }
 
-        /* [보존] 데이터 테이블 스타일 */
-        .spec-table { width: 100%; border-collapse: collapse; font-size: 0.65rem; margin-bottom: 30px; }
+        .spec-table { width: 100%; border-collapse: collapse; font-size: 0.6rem; margin: 20px 0; }
         .spec-table tr { border-bottom: 1px solid var(--line-white); }
-        .spec-table td { padding: 12px 0; text-transform: uppercase; color: var(--sub-grey); }
-        .spec-val { text-align: right; font-weight: 400; color: var(--main-white); }
-        .vip-tag { border: 1px solid #fff; padding: 2px 6px; font-size: 0.55rem; margin-left: 5px; }
+        .spec-table td { padding: 10px 0; color: var(--sub-grey); text-transform: uppercase; }
+        .spec-val { text-align: right; color: var(--main-white); }
 
-        /* [보존/액티브] 이미지 박스 인터랙션 */
-        .image-box {
-            background: rgba(255, 255, 255, 0.02); 
-            width: 100%; aspect-ratio: 16 / 9;
-            display: flex; align-items: center; justify-content: center;
-            border: 1px solid var(--line-white);
-            position: relative; overflow: hidden;
-            transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: crosshair;
-        }
-
-        .image-box:hover {
-            border-color: var(--main-white);
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        /* [보존/액티브] 스캔 라인 애니메이션 */
-        .image-box::after {
-            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(0deg, transparent 0%, rgba(255,255,255,0.05) 50%, transparent 100%);
-            transform: translateY(-100%); transition: 0.6s;
-        }
-
-        .image-box:hover::after { transform: translateY(100%); }
-
-        /* [보존/액티브] 시각 레이블 텍스트 효과 */
-        .visual-label {
-            font-size: 0.55rem; color: var(--sub-grey); letter-spacing: 4px; transition: 0.4s;
-        }
-
-        .image-box:hover .visual-label {
-            color: var(--main-white);
-            letter-spacing: 8px;
-        }
-        
-        .footer-nav { margin-top: 20px; display: flex; gap: 20px; font-size: 0.6rem; color: var(--sub-grey); text-transform: uppercase; }
-
+        /* 버튼 스타일 */
         .btn-access {
             padding: 15px 50px; border: 1px solid var(--sub-grey); background: none; color: white;
-            cursor: pointer; letter-spacing: 5px; transition: 0.5s; font-size: 0.8rem;
+            cursor: pointer; letter-spacing: 5px; font-size: 0.8rem; transition: 0.5s;
         }
-        .btn-access:hover { border-color: white; background: white; color: black; }
+        .btn-access:hover { background: #fff; color: #000; }
+
+        /* Culture/History 텍스트 스타일 */
+        .text-block { line-height: 1.8; color: #aaa; font-size: 0.9rem; max-width: 700px; }
+        .text-block b { color: #fff; font-weight: 400; }
     </style>
 </head>
 <body>
 
-    <div id="main-screen">
-        <h1 style="letter-spacing: 15px; font-weight: 700; margin-bottom: 10px;">NEURO X</h1>
+    <div id="intro-screen">
+        <h1 style="letter-spacing: 20px; font-weight: 700; margin-bottom: 10px;">NEURO X</h1>
         <div style="text-align: center; margin-bottom: 50px;">
-            <div style="font-size: 1rem; font-weight: 100; letter-spacing: 6px;">DESIGNING YOUR TOMORROW</div>
+            <div style="font-size: 1rem; font-weight: 100; letter-spacing: 8px;">DESIGNING YOUR TOMORROW</div>
             <div style="font-size: 0.7rem; color: var(--sub-grey); margin-top: 10px;">당신의 내일을 설계합니다.</div>
         </div>
-        <button class="btn-access" onclick="revealServices()">SYSTEM ACCESS</button>
+        <button class="btn-access" onclick="enterLobby()">SYSTEM ACCESS</button>
     </div>
 
-    <div class="container" id="service-content">
-        <header>
-            <h1 class="page-title" style="font-weight: 100;">Service Catalog</h1>
-            <div style="font-size: 0.6rem; color: var(--sub-grey); text-align: right;">NEUROX® AUTH: LV_01</div>
-        </header>
-
-        <div class="service-grid">
-            <div class="service-card">
-                <div class="card-header">
-                    <div class="card-title">Emotion Separation</div>
-                    <div class="card-ko">감정 분리</div>
-                </div>
-                <table class="spec-table">
-                    <tr><td>Technical Tier</td><td class="spec-val">Phase 01 / Standard</td></tr>
-                    <tr><td>Processing</td><td class="spec-val">Selective Synapse Sync</td></tr>
-                    <tr><td>Data Integrity</td><td class="spec-val">100.0% Fact Retention</td></tr>
-                </table>
-                <div class="image-box">
-                    <div class="visual-label">[ DECOUPLING EMOTION ]</div>
-                </div>
-                <div class="footer-nav"><span>● Secure Protocol</span></div>
+    <div id="lobby-screen">
+        <nav>
+            <div class="nav-logo" onclick="location.reload()">NEURO X</div>
+            <div class="nav-links">
+                <span onclick="showSection('services')">Services</span>
+                <span onclick="showSection('culture')">Culture & History</span>
+                <span onclick="showSection('location')">Location</span>
             </div>
+        </nav>
 
-            <div class="service-card">
-                <div class="card-header">
-                    <div class="card-title">Memory Incineration <span class="vip-tag">VIP</span></div>
-                    <div class="card-ko">기억 소각</div>
+        <section id="services" class="content-section active-section">
+            <h2 style="font-weight: 100; letter-spacing: 5px; margin-bottom: 40px;">SERVICE CATALOG</h2>
+            <div class="service-grid">
+                <div class="service-card">
+                    <div style="margin-bottom: 20px; font-weight: 700;">EMOTION SEPARATION <span style="font-size: 0.7rem; color: var(--sub-grey); font-weight: 400;">감정 분리</span></div>
+                    <table class="spec-table">
+                        <tr><td>Protocol</td><td class="spec-val">NX-01-ALPHA</td></tr>
+                        <tr><td>Fact Integrity</td><td class="spec-val">100.0%</td></tr>
+                    </table>
+                    <div class="image-box"><div class="visual-label">[ DECOUPLING... ]</div></div>
                 </div>
-                <table class="spec-table">
-                    <tr><td>Technical Tier</td><td class="spec-val">Phase 02 / Exclusive</td></tr>
-                    <tr><td>Processing</td><td class="spec-val">Deep Neural Erasure</td></tr>
-                    <tr><td>Side Effect</td><td class="spec-val">Blank Syndrome Potential</td></tr>
-                </table>
-                <div class="image-box">
-                    <div class="visual-label">[ WARNING: IRREVERSIBLE ]</div>
+                <div class="service-card">
+                    <div style="margin-bottom: 20px; font-weight: 700;">MEMORY INCINERATION <span style="font-size: 0.7rem; color: var(--sub-grey); font-weight: 400;">기억 소각</span></div>
+                    <table class="spec-table">
+                        <tr><td>Protocol</td><td class="spec-val">NX-02-OMEGA (VIP)</td></tr>
+                        <tr><td>Stability</td><td class="spec-val">CRITICAL RISK</td></tr>
+                    </table>
+                    <div class="image-box"><div class="visual-label">[ IRREVERSIBLE PROCESS ]</div></div>
                 </div>
-                <div class="footer-nav"><span>● High-Risk Asset</span></div>
             </div>
-        </div>
+        </section>
+
+        <section id="culture" class="content-section">
+            <h2 style="font-weight: 100; letter-spacing: 5px; margin-bottom: 40px;">CULTURE & HISTORY</h2>
+            <div class="text-block">
+                <p><b>기억은 데이터이며, 데이터는 자산입니다.</b> 뉴로엑스는 2040년 설립 이래 인류의 정신적 평온을 위해 헌신해 왔습니다. 우리는 고통스러운 기억을 단순한 '수정 가능한 버그'로 정의합니다.</p>
+                <p>뉴로엑스의 사내 문화는 <b>'무결점의 정신'</b>을 지향합니다. 모든 임직원은 정기적인 감정 최적화 시술을 통해 최상의 업무 효율을 유지하며, 이는 곧 고객의 내일을 설계하는 원동력이 됩니다.</p>
+            </div>
+        </section>
+
+        <section id="location" class="content-section">
+            <h2 style="font-weight: 100; letter-spacing: 5px; margin-bottom: 40px;">LOCATION</h2>
+            <div class="text-block">
+                <p><b>NeuroX Global Headquarters</b></p>
+                <p style="color: var(--sub-grey);">세종특별자치시 코어 구역 01-X<br>뉴로엑스 타워 (전 구역 기밀 등급 보안 적용)</p>
+                <div style="width: 100%; height: 200px; background: #1a1a1a; border: 1px solid var(--line-white); margin-top: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: #444;">
+                    [ MAP DATA ENCRYPTED ]
+                </div>
+            </div>
+        </section>
     </div>
 
     <script>
-        function revealServices() {
-            const main = document.getElementById('main-screen');
-            const content = document.getElementById('service-content');
-            main.style.opacity = '0';
+        // 1번 -> 2번 전환
+        function enterLobby() {
+            const intro = document.getElementById('intro-screen');
+            const lobby = document.getElementById('lobby-screen');
+            
+            intro.style.transform = 'translateY(-100%)'; // 위로 슬라이드하며 사라짐
             setTimeout(() => {
-                main.style.display = 'none';
-                content.style.display = 'block';
-                setTimeout(() => { content.style.opacity = '1'; }, 50);
+                intro.style.display = 'none';
+                lobby.style.display = 'block';
+                setTimeout(() => { lobby.style.opacity = '1'; }, 50);
             }, 1000);
+        }
+
+        // 메뉴 클릭 시 섹션 전환
+        function showSection(sectionId) {
+            // 모든 섹션 숨기기
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(s => s.classList.remove('active-section'));
+
+            // 선택한 섹션만 보이기
+            document.getElementById(sectionId).classList.add('active-section');
+            
+            // 페이지 상단으로 스크롤
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
 </body>
