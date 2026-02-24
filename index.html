@@ -4,90 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;700&display=swap" rel="stylesheet">
-    <title>NeuroX | Designed Tomorrow</title>
-    <style>
-        :root {
-            --bg-color: #0a0a0a;
-            --main-white: #ffffff;
-            --sub-grey: #666;
-            --line-white: rgba(255, 255, 255, 0.15);
-        }
-
-        body, html { 
-            margin: 0; padding: 0;
-            background-color: var(--bg-color); 
-            color: var(--main-white);
-            font-family: 'Inter', sans-serif;
-            overflow: hidden; /* 전체 스크롤은 스크립트로 제어 */
-        }
-
-        /* 1번 메인: 인트로 (오버레이 형태) */
-        #intro-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            background: var(--bg-color);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 100;
-            transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1);
-        }
-
-        /* 2번 페이지: 메인 로비 */
-        #lobby-screen {
-            position: relative; width: 100%; height: 100vh;
-            overflow-y: auto; /* 로비 내부에서만 스크롤 가능 */
-            padding-top: 80px; box-sizing: border-box;
-        }
-
-        /* 네비게이션바 */
-        nav {
-            position: fixed; top: 0; width: 100%; height: 70px;
-            border-bottom: 1px solid var(--line-white);
-            background: rgba(10, 10, 10, 0.9);
-            backdrop-filter: blur(10px);
-            z-index: 90;
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 0 5%; box-sizing: border-box;
-        }
-
-        .nav-logo { font-weight: 700; letter-spacing: 5px; cursor: pointer; }
-        .nav-links { display: flex; gap: 20px; }
-        .nav-links span { font-size: 0.65rem; color: var(--sub-grey); cursor: pointer; text-transform: uppercase; letter-spacing: 2px; }
-
-        /* 컨텐츠 섹션 */
-        .content-section {
-            width: 90%; max-width: 1000px; margin: 40px auto;
-            display: none; animation: fadeIn 0.8s forwards;
-        }
-        .active-section { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* 버튼 및 기타 스타일 생략(기존 유지) */
-        .btn-access {
-            padding: 15px 50px; border: 1px solid var(--sub-grey); background: none; color: white;
-            cursor: pointer; letter-spacing: 5px; font-size: 0.8rem; transition: 0.5s;
-        }
-        .btn-access:hover { background: #fff; color: #000; }
-
-        /* 스크롤 유도 안내 */
-        .scroll-hint {
-            position: absolute; bottom: 30px; font-size: 0.6rem; color: #333;
-            letter-spacing: 2px; animation: bounce 2s infinite;
-        }
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-5px);} 60% {transform: translateY(-3px);} }
-    </style>
+    <link rel="stylesheet" href="style.css"> <title>NeuroX | Designed Tomorrow</title>
 </head>
 <body>
 
     <div id="intro-screen">
-        <h1 style="letter-spacing: 20px; font-weight: 700;">NEURO X</h1>
-        <div style="text-align: center; margin-bottom: 50px;">
-            <div style="font-size: 1rem; font-weight: 100; letter-spacing: 8px;">DESIGNING YOUR TOMORROW</div>
-            <div style="font-size: 0.7rem; color: var(--sub-grey); margin-top: 10px;">당신의 내일을 설계합니다.</div>
+        <h1 class="main-logo">NEURO X</h1>
+        <div class="slogan-group">
+            <div class="en-slogan">Designing Your Tomorrow</div>
+            <div class="ko-slogan">당신의 내일을 설계합니다.</div>
         </div>
         <button class="btn-access" onclick="toggleScreen(true)">SYSTEM ACCESS</button>
         <div class="scroll-hint">SCROLL DOWN TO ENTER</div>
     </div>
 
-    <div id="lobby-screen" onscroll="handleLobbyScroll(this)">
+    <div id="lobby-screen">
         <nav>
             <div class="nav-logo" onclick="toggleScreen(false)">NEURO X</div>
             <div class="nav-links">
@@ -98,55 +29,48 @@
         </nav>
 
         <section id="services" class="content-section active-section">
-            <h2 style="font-weight: 100; letter-spacing: 5px; margin-bottom: 30px;">SERVICE CATALOG</h2>
-            <p style="color: #444; font-size: 0.8rem;">[ 서비스 데이터를 불러오는 중... ]</p>
+            <header class="section-header">
+                <h2 class="page-title">Service Catalog</h2>
+                <div class="auth-label">NEUROX® AUTH: LV_01</div>
+            </header>
+
+            <div class="service-grid">
+                <div class="service-card">
+                    <div class="card-header">
+                        <div class="card-title">Emotion Separation</div>
+                        <div class="card-ko">감정 분리</div>
+                    </div>
+                    <table class="spec-table">
+                        <tr><td>Technical Tier</td><td class="spec-val">Phase 01 / Standard</td></tr>
+                        <tr><td>Processing</td><td class="spec-val">Selective Synapse Sync</td></tr>
+                    </table>
+                    <div class="image-box"><div class="visual-label">[ DECOUPLING EMOTION ]</div></div>
+                </div>
+
+                <div class="service-card">
+                    <div class="card-header">
+                        <div class="card-title">Memory Incineration <span class="vip-tag">VIP</span></div>
+                        <div class="card-ko">기억 소각</div>
+                    </div>
+                    <table class="spec-table">
+                        <tr><td>Technical Tier</td><td class="spec-val">Phase 02 / Exclusive</td></tr>
+                        <tr><td>Side Effect</td><td class="spec-val">Blank Syndrome Potential</td></tr>
+                    </table>
+                    <div class="image-box"><div class="visual-label">[ WARNING: IRREVERSIBLE ]</div></div>
+                </div>
+            </div>
         </section>
 
         <section id="culture" class="content-section">
-            <h2 style="font-weight: 100; letter-spacing: 5px; margin-bottom: 30px;">CORPORATE HISTORY</h2>
-            <p style="font-size: 0.9rem; line-height: 1.8; color: #888;">2040: NeuroX 정식 설립<br>2042: '감정 분리' 기술 특허 취득</p>
+            <h2 class="page-title">Corporate History</h2>
+            <p class="text-block">기억 데이터 취급 독점 기업으로서의 기록...</p>
+        </section>
+
+        <section id="location" class="content-section">
+            <h2 class="page-title">Location</h2>
+            <p class="text-block">본사: 검은 대리석과 금속으로 이루어진 거대 IT 본사</p>
         </section>
     </div>
 
-    <script>
-        const intro = document.getElementById('intro-screen');
-        const lobby = document.getElementById('lobby-screen');
-
-        // 화면 전환 함수
-        function toggleScreen(enter) {
-            if (enter) {
-                intro.style.transform = 'translateY(-100%)';
-            } else {
-                intro.style.transform = 'translateY(0)';
-            }
-        }
-
-        // 1번 화면에서 휠을 내릴 때
-        window.addEventListener('wheel', (e) => {
-            if (intro.style.transform === 'translateY(0)' || intro.style.transform === '') {
-                if (e.deltaY > 0) toggleScreen(true);
-            }
-        });
-
-        // 2번 화면에서 휠을 올릴 때 (최상단인 경우에만)
-        function handleLobbyScroll(el) {
-            if (el.scrollTop === 0) {
-                // 상단에서 더 위로 올리려는 제스처를 감지하기 위해 wheel 이벤트 별도 처리 필요
-            }
-        }
-
-        // 2번 화면 최상단에서 위로 스크롤 시 복귀
-        lobby.addEventListener('wheel', (e) => {
-            if (lobby.scrollTop === 0 && e.deltaY < 0) {
-                toggleScreen(false);
-            }
-        });
-
-        function showSection(sectionId) {
-            const sections = document.querySelectorAll('.content-section');
-            sections.forEach(s => s.classList.remove('active-section'));
-            document.getElementById(sectionId).classList.add('active-section');
-        }
-    </script>
-</body>
+    <script src="script.js"></script> </body>
 </html>
