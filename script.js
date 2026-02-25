@@ -29,26 +29,52 @@ const orbitCircle = document.querySelector('.orbit-circle');
 const orbitNumbers = document.querySelectorAll('.orbit-number');
 const historyItems = document.querySelectorAll('.history-item');
 
-if (timelineContent) {
-    timelineContent.addEventListener('scroll', () => {
-        const containerHeight = timelineContent.offsetHeight;
-        // 1. 현재 인덱스 계산
-        const index = Math.round(timelineContent.scrollTop / containerHeight);
+// --- [NEW] 관람차 회전 로직 ---
+const historyWheel = document.getElementById('history-wheel');
+const timelineItems = document.querySelectorAll('.timeline-item');
+let currentIndex = 0; 
+
+const cultureSection = document.getElementById('culture');
+
+if (cultureSection) {
+    cultureSection.addEventListener('wheel', (e) => {
+        e.preventDefault(); // 페이지 전체가 꿀렁이는 걸 막아줍니다.
         
-        // 2. 전체 궤도(원) 회전 각도
-        const rotationAngle = index * -40; 
-        orbitCircle.style.transform = `translateY(-50%) rotate(${rotationAngle}deg)`;
-        
-        // 3. [추가된 핵심 로직] 숫자가 기울어지지 않게 상쇄 회전 적용
-        orbitNumbers.forEach((num, i) => {
-            const initialAngle = (i - 2) * 40; // 숫자의 기본 배치 각도
-            // 궤도가 돌아간 만큼 반대 방향으로 똑같이 돌려줍니다.
-            num.style.transform = `rotate(${initialAngle}deg) rotate(${-rotationAngle - initialAngle}deg)`;
-        });
-        
-        updateTimelineUI(index);
+        if (e.deltaY > 0) {
+            if (currentIndex < timelineItems.length - 1) {
+                currentIndex++;
+                updateWheel();
+            }
+        } else {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateWheel();
+            }
+        }
+    }, { passive: false });
+}
+
+// 클릭하면 해당 연도로 이동 (이 함수가 있어야 숫자를 눌렀을 때 돌아갑니다!)
+function rotateTo(index) {
+    currentIndex = index;
+    updateWheel();
+}
+
+function updateWheel() {
+    const rotateAngle = currentIndex * -15; // 15도씩 회전
+    historyWheel.style.transform = `rotate(${rotateAngle}deg)`;
+
+    timelineItems.forEach((item, index) => {
+        if (index === currentIndex) {
+            item.classList.add('active');
+        } else {
+            item.classList.remove('active');
+        }
     });
 }
+
+// 시작하자마자 01번이 중앙에 오도록 초기화
+updateWheel();
 
 function updateTimelineUI(index) {
     orbitNumbers.forEach((num, i) => {

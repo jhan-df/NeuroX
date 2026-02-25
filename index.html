@@ -67,31 +67,51 @@
         </section>
 
         <section id="culture" class="content-section">
-             <h2 class="page-title">Corporate History</h2>
-            <div class="timeline-container">
-                <div class="orbit-visual">
-                    <div class="orbit-circle">
-                        <div class="orbit-number" style="--i:1;">01</div>
-                        <div class="orbit-number" style="--i:2;">02</div>
-                        <div class="orbit-number" style="--i:3;">03</div>
-                        <div class="orbit-number" style="--i:4;">04</div>
-                        <div class="orbit-number" style="--i:5;">05</div>
+            <h2 class="page-title">Corporate History</h2>
+    
+            <div class="wheel-wrapper">
+                <div class="big-circle" id="history-wheel">
+            
+                    <div class="timeline-item active" onclick="rotateTo(0)">
+                        <div class="item-number">01</div>
+                        <div class="item-content">
+                            <h3>2040</h3>
+                            <p>뉴로엑스 정식 설립. 세종 스마트 코어 센터 입주.</p>
+                        </div>
                     </div>
-                </div>
-        
-                <div class="timeline-content">
-                    <div class="history-item" data-index="1">
-                        <h3>2040</h3>
-                        <p>뉴로엑스 정식 설립. 세종 스마트 코어 센터 입주.</p>
+
+                     <div class="timeline-item" onclick="rotateTo(1)">
+                        <div class="item-number">02</div>
+                        <div class="item-content">
+                            <h3>2042</h3>
+                            <p>감정 분리 기술 'E-VOID' 프로토타입 성공.</p>
+                        </div>
                     </div>
-                    <div class="history-item" data-index="2">
-                        <h3>2042</h3>
-                        <p>감정 분리 기술 'E-VOID' 프로토타입 성공.</p>
+
+                    <div class="timeline-item" onclick="rotateTo(2)">
+                        <div class="item-number">03</div>
+                        <div class="item-content">
+                            <h3>2045</h3>
+                            <p>정부 공식 기억 데이터 독점 관리 파트너십 체결.</p>
+                        </div>
                     </div>
-                    <div class="history-item" data-index="3">
-                        <h3>2045</h3>
-                        <p>정부 공식 기억 데이터 독점 관리 파트너십 체결.</p>
+            
+                    <div class="timeline-item" onclick="rotateTo(3)">
+                        <div class="item-number">04</div>
+                        <div class="item-content">
+                            <h3>2048</h3>
+                            <p>글로벌 메모리 아카이브 네트워크 구축.</p>
+                        </div>
                     </div>
+
+                    <div class="timeline-item" onclick="rotateTo(4)">
+                        <div class="item-number">05</div>
+                        <div class="item-content">
+                            <h3>2050</h3>
+                            <p>인류 감정 보존 프로젝트 'Noah' 가동.</p>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>

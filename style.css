@@ -132,97 +132,87 @@ nav {
 .visual-label { font-size: 0.5rem; color: var(--sub-grey); letter-spacing: 4px; transition: 0.4s; }
 .image-box:hover .visual-label { color: #fff; letter-spacing: 8px; }
 
-/* --- 타임라인 컨테이너 보정 --- */
-.timeline-container {
-    display: flex;
-    height: 600px; /* 높이를 조금 더 키워 가시성을 확보합니다 */
+/* --- [NEW] 관람차 타임라인 스타일 --- */
+.wheel-wrapper {
     position: relative;
-    overflow: hidden;
-    margin-top: 50px;
+    width: 100%;
+    height: 60vh; /* 화면 높이의 60% 사용 */
+    overflow: hidden; 
+    display: flex;
     align-items: center; /* 세로 중앙 정렬 */
+    margin-top: 50px;
 }
 
-/* --- 좌측 숫자 궤도: 테두리 보강 및 정중앙 배치 --- */
-.orbit-visual {
-    flex: 1;
-    position: relative;
-    height: 100%;
-    display: flex;
-    align-items: center;
-}
-
-.orbit-circle {
+/* 돌아가는 거대한 원 (왼쪽에 숨어있음) */
+.big-circle {
     position: absolute;
-    left: -350px; /* 원을 더 왼쪽으로 밀어 궤도 곡선을 완만하게 */
-    top: 50%;
-    width: 800px; /* 원 크기를 키워 이미지 1번 느낌 재현 */
-    height: 800px;
-    transform: translateY(-50%); 
-    /* 테두리: 점선 대신 실선으로 묵직하게 */
-    border: 1.5px solid rgba(255, 255, 255, 0.3); 
+    left: -500px; /* 원의 중심을 화면 왼쪽 밖으로 */
+    width: 1200px; /* 아주 큰 원 */
+    height: 1200px;
+    border: 1px solid rgba(255, 255, 255, 0.1); /* 아주 얇은 실선 테두리 */
     border-radius: 50%;
-    transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-    transform-origin: center center;
+    /* 회전축을 원의 정중앙으로 설정 */
+    transform-origin: 50% 50%;
+    transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1); /* 아주 부드럽고 고급스러운 움직임 */
 }
 
-/* --- 우측 텍스트 영역: 스크롤바 숨기기 및 중앙 정렬 --- */
-.timeline-content {
-    flex: 1;
-    height: 100%;
-    overflow-y: scroll;
-    scroll-snap-type: y mandatory;
-    -ms-overflow-style: none;  
-    scrollbar-width: none;
-}
-.timeline-content::-webkit-scrollbar { display: none; }
-
-.history-item {
-    height: 100%; /* 부모 높이와 일치시켜야 스냅이 중앙에 걸림 */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    scroll-snap-align: center;
-    opacity: 0.1;
-    transition: all 0.6s ease;
-}
-
-.history-item.active-text {
-    opacity: 1;
-}
-
-.history-item h3 {
-    font-size: 4rem; /* 연도 숫자를 더 크게 */
-    font-weight: 800;
-    margin-bottom: 10px;
-    letter-spacing: 5px;
-}
-
-/* --- 핵심: 숫자가 기울어지지 않게 보정 --- */
-.orbit-number {
+/* 개별 아이템 (숫자 + 텍스트 한 덩어리) */
+.timeline-item {
     position: absolute;
     top: 50%;
     left: 50%;
-    margin-left: 360px; /* 원의 반지름에 맞게 조정 */
-    margin-top: -40px;
-    width: 100px;
-    height: 80px;
+    width: 800px; /* 텍스트가 들어갈 넉넉한 너비 */
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 3.5rem;
-    font-weight: 800;
-    color: rgba(255, 255, 255, 0.05);
     cursor: pointer;
-    transition: all 0.6s ease;
     
-    /* 궤도 회전용 축 설정 */
-    transform-origin: -360px 40px; 
+    /* ★ 핵심: 원의 중심(왼쪽 -600px 지점)을 기준으로 회전 */
+    transform-origin: -600px center; 
+    transition: opacity 0.5s, transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+    
+    opacity: 0.3; /* 평소엔 흐리게 (요청하신 부분!) */
 }
 
-/* 이미지 1번처럼 숫자가 똑바로 서있게 하려면, 
-   전체 회전 각도만큼 '반대로' 숫자를 돌려줘야 합니다. */
-.orbit-number:nth-child(1) { transform: rotate(-80deg) rotate(80deg); }
-.orbit-number:nth-child(2) { transform: rotate(-40deg) rotate(40deg); }
-.orbit-number:nth-child(3) { transform: rotate(0deg) rotate(0deg); }
-.orbit-number:nth-child(4) { transform: rotate(40deg) rotate(-40deg); }
-.orbit-number:nth-child(5) { transform: rotate(80deg) rotate(-80deg); }
+/* 선택된 녀석은 선명하게 */
+.timeline-item.active {
+    opacity: 1;
+    z-index: 10;
+}
+
+/* 숫자 디자인 (01, 02...) */
+.item-number {
+    font-size: 6rem; /* 큼지막하게 */
+    font-weight: 800;
+    color: #fff;
+    margin-right: 80px; /* ★ 요청하신 간격: 숫자와 텍스트 사이를 띄움 */
+    text-shadow: 0 0 30px rgba(255,255,255,0.1);
+}
+
+/* 텍스트 묶음 */
+.item-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.item-content h3 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin: 0 0 15px 0;
+    letter-spacing: 2px;
+}
+
+.item-content p {
+    font-size: 1.1rem;
+    color: var(--sub-grey);
+    margin: 0;
+    font-weight: 300;
+    line-height: 1.6;
+}
+
+/* --- 초기 각도 배치 (부채꼴 모양으로 배치) --- */
+/* 15도씩 차이를 둬서 아래로 촤르륵 깔리게 합니다 */
+.timeline-item:nth-child(1) { transform: rotate(0deg); }
+.timeline-item:nth-child(2) { transform: rotate(15deg); }
+.timeline-item:nth-child(3) { transform: rotate(30deg); }
+.timeline-item:nth-child(4) { transform: rotate(45deg); }
+.timeline-item:nth-child(5) { transform: rotate(60deg); }
