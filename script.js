@@ -31,23 +31,22 @@ const historyItems = document.querySelectorAll('.history-item');
 
 if (timelineContent) {
     timelineContent.addEventListener('scroll', () => {
-        const itemHeight = timelineContent.offsetHeight;
-        const index = Math.round(timelineContent.scrollTop / itemHeight);
+        const containerHeight = timelineContent.offsetHeight;
+        // 1. 현재 인덱스 계산
+        const index = Math.round(timelineContent.scrollTop / containerHeight);
         
-        // 회전 각도 보정
-        const rotation = index * -40; 
-        orbitCircle.style.transform = `rotate(${rotation}deg)`;
+        // 2. 전체 궤도(원) 회전 각도
+        const rotationAngle = index * -40; 
+        orbitCircle.style.transform = `translateY(-50%) rotate(${rotationAngle}deg)`;
+        
+        // 3. [추가된 핵심 로직] 숫자가 기울어지지 않게 상쇄 회전 적용
+        orbitNumbers.forEach((num, i) => {
+            const initialAngle = (i - 2) * 40; // 숫자의 기본 배치 각도
+            // 궤도가 돌아간 만큼 반대 방향으로 똑같이 돌려줍니다.
+            num.style.transform = `rotate(${initialAngle}deg) rotate(${-rotationAngle - initialAngle}deg)`;
+        });
         
         updateTimelineUI(index);
-    });
-
-    orbitNumbers.forEach((num, i) => {
-        num.addEventListener('click', () => {
-            timelineContent.scrollTo({
-                top: i * timelineContent.offsetHeight,
-                behavior: 'smooth'
-            });
-        });
     });
 }
 
